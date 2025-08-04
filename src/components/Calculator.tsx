@@ -2,6 +2,9 @@ import Keys from "./Keys";
 import { create } from "zustand";
 import type { ResultStore } from "./Store";
 
+const isOperator = (val: string) => ['+', '-', '*', '/', '%','^'].includes(val);
+
+
 const useResultStore = create<ResultStore>((set, get) => ({
     answer: "",
     evaluated:false,
@@ -9,11 +12,20 @@ const useResultStore = create<ResultStore>((set, get) => ({
         const {answer,evaluated} = get();
         if (evaluated)
         {
-            set({ answer: val, evaluated: false });   
-            {console.log(answer)}
-            return;
+            if(isOperator(val))
+            {
+                set({ answer: answer + val, evaluated: false }); 
+            }
+            else 
+            {
+                set({ answer: val, evaluated: true });
+            }
         }
-        set({ answer: answer + val });
+        else
+        {
+            set({ answer: answer + val });
+        }
+        
     },
     clear: () => {
         const current = get().answer;
@@ -25,7 +37,7 @@ const useResultStore = create<ResultStore>((set, get) => ({
             const result = eval(get().answer);
             set({ answer: result.toString() , evaluated: true});
         } catch {
-            set({ answer: "Error",evaluated:true });
+            set({ answer: "Error", evaluated:true });
         }
     },
 }));
@@ -56,7 +68,7 @@ const Calculator = () => {
                 </label>
                 <label
                     htmlFor="ans"
-                    className="flex justify-end text-white font-bold text-4xl mt-5 border-2 h-14 px-4 py-1.5 rounded overflow-x-auto bg-black"
+                    className="flex justify-end text-black font-bold text-4xl mt-5 border-2 h-14 px-4 py-1.5 rounded overflow-x-auto bg-white"
                 >
                     {answer || "0"}
                 </label>
