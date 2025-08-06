@@ -1,7 +1,7 @@
 type Elements = {
   label: string;
   onClick: () => void;
-  isOperator?: boolean; // optional prop for styling
+  isOperator?: boolean;
 };
 
 const Keys = ({ label, onClick, isOperator }: Elements) => {
@@ -9,7 +9,7 @@ const Keys = ({ label, onClick, isOperator }: Elements) => {
     <button
       onClick={onClick}
       className={`font-bold flex justify-center items-center 
-        hover:opacity-80 duration-300 border rounded-xl p-3 text-lg
+        duration-300 border rounded-xl p-3 text-lg hover:opacity-80
         ${isOperator ? "bg-orange-400 text-white" : "bg-white text-gray-800"}`}
     >
       {label}
